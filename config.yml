@@ -39,15 +39,17 @@ group_settings:
       only_allow_merge_if_build_succeeds: true
       only_allow_merge_if_all_discussions_are_resolved: true
 
-    # keys names are branches names and values are as parameters described at
-    # https://docs.gitlab.com/ee/api/branches.html#protect-repository-branch
     branches:
-      develop:
-        protected: false
-      master:
+      # this name is not actually used, it's just for you
+      protected_less:
+        # all keys here except "branches" are parameters described at
+        # https://docs.gitlab.com/ee/api/branches.html#protect-repository-branch
         protected: true
-        developers_can_push: false
+        developers_can_push: true
         developers_can_merge: true
+        # this is an array of branch names for which this set of settings should be applied
+        branches:
+          - develop
 
     # service names are as in the endpoints described at https://docs.gitlab.com/ce/api/services.html
     # hashes under those name correspond to the parameters described for given service there
@@ -124,11 +126,13 @@ project_settings:
         can_push: false
 
     branches:
-      # see comment above - this branch config will be ADDED to the branches configured on a group level
-      special_branch:
+      # see comment above - this key will be ADDED to the keys configured on a group level
+      protected_more:
         protected: true
         developers_can_push: false
-        developers_can_merge: true
+        developers_can_merge: false
+        branches:
+          - master
 
     hooks:
       skip: true # this will skip whole hooks config *section* for this project, although it is set on group level
