@@ -330,7 +330,7 @@ class GitLabFormCore(object):
                     self.gl.unprotect_branch(project_and_group, branch)
                     self.gl.protect_branch(project_and_group, branch,
                                            configuration['branches'][branch]['developers_can_push'],
-                                           configuration['branches'][branch]['developers_can_merge'])
+                                           configuration['branches'][branch]['developers_can_merge'],configuration['branches'][branch]['push_access_level'],configuration['branches'][branch]['merge_access_level'],configuration['branches'][branch]['unprotect_access_level'])
                 else:
                     logging.debug("Setting branch '%s' as unprotected", branch)
                     self.gl.unprotect_branch(project_and_group, branch)

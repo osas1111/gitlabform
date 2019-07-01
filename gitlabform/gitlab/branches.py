@@ -3,16 +3,22 @@ from gitlabform.gitlab.core import GitLabCore
 
 class GitLabBranches(GitLabCore):
 
-    def protect_branch(self, project_and_group_name, branch, developers_can_push, developers_can_merge):
+    def protect_branch(self, project_and_group_name, branch, developers_can_push, developers_can_merge, push_access_level, merge_access_level, unprotect_access_level):
         data = {
             "id": project_and_group_name,
             "branch": branch,
             "developers_can_push": developers_can_push,
             "developers_can_merge": developers_can_merge,
         }
-        return self._make_requests_to_api("projects/%s/repository/branches/%s/protect",
-                                          (project_and_group_name, branch),
-                                          method='PUT', data=data,
+        print(push_access_level, merge_access_level, unprotect_access_level)
+        project_id = self._get_project_id(project_and_group_name)
+        #return self._make_requests_to_api("projects/%s/repository/branches/%s/protect",
+        #                                  (project_and_group_name, branch),
+        #                                  method='PUT', data=data,
+        #                                  expected_codes=[200, 201])
+        return self._make_requests_to_api("projects/%s/protected_branches?name=%s&push_access_level=%s&merge_access_level=%s&unprotect_access_level=%s",
+                                          (project_and_group_name, branch, push_access_level, merge_access_level, unprotect_access_level),
+                                          method='POST',
                                           expected_codes=[200, 201])
 
     def unprotect_branch(self, project_and_group_name, branch):
